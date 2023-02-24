@@ -6,12 +6,21 @@ var meses = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 var tipoConsulta = 3 // Outros Pagamentos
 
 // De 04/2006 a 02/2011 (uma farmácia ainda conta nesse último mês)
+// De 01/2017 em diante
 var blocos = 7 // TRANSFERÊNCIAS NÃO REGULAMENTADAS POR BLOCO DE FINANCIAMENTO
 var componentes = 12 // FARMACIA POPULAR
+var grupo = ""
 
-// De 02/2011 em diante
+// De 02/2011 a 12/2016
 var blocos = 4 // ASSISTÊNCIA FARMACÊUTICA
 var componentes = 32 // FARMÁCIA POPULAR
+var grupo = ""
+
+// De 02/2018 em diante
+var blocos = ""
+var componentes = 107 // MANUTENCAO E FUNCIONAMENTO DO PROGRAMA FARMACIA POPULAR - CO-PAGAMENTO
+var componentes = 106 // MANUTENCAO E FUNCIONAMENTO DO PROGRAMA FARMACIA POPULAR - GRATUIDADE
+var grupo = 28 // FARMACIA POPULAR
 
 
 function loadSearch() {
@@ -22,6 +31,7 @@ function loadSearch() {
     mesArgument = "&mes=" + mes;
     pageArgument = "&page=" + page;
     tipoConsultaArgument = "&tipoConsulta=" + tipoConsulta;
+    grupoArgument = "&grupo=" + grupo;
     fullArgumentsText = FNSSuffix + anoArgument + blocosArgument + componentesArgument + countArgument + mesArgument + pageArgument + tipoConsultaArgument
 
     var xhr = new XMLHttpRequest();
@@ -38,3 +48,12 @@ function loadSearch() {
     console.log("Requesting...");
     xhr.send();
 }
+
+/*
+
+formas de extrair em 2018
+
+componentes = 106; mes = 5; ano = 2018; loadSearch(); console.log(resposta.resultado.total)
+componentes = 107; loadSearch(); console.log(resposta.resultado.total)
+
+*/
