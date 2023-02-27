@@ -3,6 +3,7 @@ FNSSuffix = "https://consultafns.saude.gov.br/recursos/consulta-detalhada/entida
 var count = 100;
 var anos = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
 var meses = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+var estados = ["SP"]
 var tipoConsulta = 3 // Outros Pagamentos
 
 // De 04/2006 a 02/2011 (uma farmácia ainda conta nesse último mês)
@@ -12,6 +13,7 @@ var componentes = 12 // FARMACIA POPULAR
 var grupo = ""
 
 // De 02/2011 a 12/2016
+/*
 var blocos = 4 // ASSISTÊNCIA FARMACÊUTICA
 var componentes = 32 // FARMÁCIA POPULAR
 var grupo = ""
@@ -21,9 +23,9 @@ var blocos = ""
 var componentes = 107 // MANUTENCAO E FUNCIONAMENTO DO PROGRAMA FARMACIA POPULAR - CO-PAGAMENTO
 var componentes = 106 // MANUTENCAO E FUNCIONAMENTO DO PROGRAMA FARMACIA POPULAR - GRATUIDADE
 var grupo = 28 // FARMACIA POPULAR
+*/
 
-
-function loadSearch() {
+function loadSearch(ano, mes, estado) {
     anoArgument = "ano=" + ano;
     blocosArgument = "&blocos=" + blocos;
     componentesArgument = "&componentes=" + componentes;
@@ -32,7 +34,8 @@ function loadSearch() {
     pageArgument = "&page=" + page;
     tipoConsultaArgument = "&tipoConsulta=" + tipoConsulta;
     grupoArgument = "&grupo=" + grupo;
-    fullArgumentsText = FNSSuffix + anoArgument + blocosArgument + componentesArgument + countArgument + mesArgument + pageArgument + tipoConsultaArgument
+    estadoArgument = "&estado=" + estado;
+    fullArgumentsText = FNSSuffix + anoArgument + blocosArgument + componentesArgument + countArgument + mesArgument + pageArgument + estadoArgument + tipoConsultaArgument
 
     var xhr = new XMLHttpRequest();
     var parser = new DOMParser();
@@ -57,3 +60,14 @@ componentes = 106; mes = 5; ano = 2018; loadSearch(); console.log(resposta.resul
 componentes = 107; loadSearch(); console.log(resposta.resultado.total)
 
 */
+
+function main() {
+    for (ano in anos) {
+        for (mes in meses) {
+            for (estado in estados) {
+                loadSearch(anos[ano], meses[mes], estados[estado]);
+                console.log(meses[mes] + "/" + anos[ano] + ": [" + estados[estado] + "] " + resposta.resultado.total)
+            }
+        }
+    }
+}
