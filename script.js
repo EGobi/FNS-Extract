@@ -1,24 +1,29 @@
 FNSSuffix = "https://consultafns.saude.gov.br/recursos/consulta-detalhada/entidades?"
 
 var count = 100;
-var anos = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
+//var anos = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
+var anos = [2011, 2012, 2013, 2014, 2015, 2016]
 var meses = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-var estados = ["SP"]
+var estados = ["SP", "BA", "MG", "PB", "RS", "MA", "CE", "PA", "GO", "SC", "PR", "RJ", "PI", "AM", "SE", "PE", "TO", "ES", "AC", "AL", "MS", "RO", "RN", "RR", "AP", "DF", "MT"]
 var tipoConsulta = 3 // Outros Pagamentos
+var page = 1
 
 // De 04/2006 a 02/2011 (uma farmácia ainda conta nesse último mês)
 // De 01/2017 em diante
+/*
 var blocos = 7 // TRANSFERÊNCIAS NÃO REGULAMENTADAS POR BLOCO DE FINANCIAMENTO
 var componentes = 12 // FARMACIA POPULAR
 var grupo = ""
+*/
 
 // De 02/2011 a 12/2016
-/*
+
 var blocos = 4 // ASSISTÊNCIA FARMACÊUTICA
 var componentes = 32 // FARMÁCIA POPULAR
 var grupo = ""
 
 // De 02/2018 em diante
+/*
 var blocos = ""
 var componentes = 107 // MANUTENCAO E FUNCIONAMENTO DO PROGRAMA FARMACIA POPULAR - CO-PAGAMENTO
 var componentes = 106 // MANUTENCAO E FUNCIONAMENTO DO PROGRAMA FARMACIA POPULAR - GRATUIDADE
