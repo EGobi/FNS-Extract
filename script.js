@@ -1,6 +1,6 @@
 FNSSuffix = "https://consultafns.saude.gov.br/recursos/consulta-detalhada/entidades?"
 FNSSuffix_detalhe = "https://consultafns.saude.gov.br/recursos/consulta-detalhada/detalhe-acao?"
-var csv_text = "data:text/csv;charset=utf-8,Data;Estado;Município;CNPJ;Razão social;Repasse\r";
+var csv_text = "data:text/csv;charset=utf-8,Data;Estado;Município;CNPJ;Razão social;Gratuidade;Co-pagamento;Total\r";
 
 var count = 100;
 var anos = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
@@ -9,13 +9,16 @@ var estados = ['AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG',
 var tipoConsulta = 3 // Outros Pagamentos
 var linha = ""
 
+var repasse_copagamento = 0
+var repasse_gratuidade = 0
+
 // De 04/2006 a 02/2011 (uma farmácia ainda conta nesse último mês)
 // De 01/2017 em diante
-
+/*
 var blocos = 7 // TRANSFERÊNCIAS NÃO REGULAMENTADAS POR BLOCO DE FINANCIAMENTO
 var componentes = 12 // FARMACIA POPULAR
 var grupo = ""
-
+*/
 
 // De 02/2011 a 12/2016
 /*
@@ -25,12 +28,13 @@ var grupo = ""
 */
 
 // De 02/2018 em diante
-/*
+
 var blocos = ""
-var componentes = 107 // MANUTENCAO E FUNCIONAMENTO DO PROGRAMA FARMACIA POPULAR - CO-PAGAMENTO
-var componentes = 106 // MANUTENCAO E FUNCIONAMENTO DO PROGRAMA FARMACIA POPULAR - GRATUIDADE
+var componentes = "" // Para selecionar ambos os abaixo
+//var componentes = 107 // MANUTENCAO E FUNCIONAMENTO DO PROGRAMA FARMACIA POPULAR - CO-PAGAMENTO
+//var componentes = 106 // MANUTENCAO E FUNCIONAMENTO DO PROGRAMA FARMACIA POPULAR - GRATUIDADE
 var grupo = 28 // FARMACIA POPULAR
-*/
+
 
 function loadSearch(ano, mes, estado, pagina) {
     anoArgument = "ano=" + ano;
@@ -42,7 +46,7 @@ function loadSearch(ano, mes, estado, pagina) {
     tipoConsultaArgument = "&tipoConsulta=" + tipoConsulta;
     grupoArgument = "&grupo=" + grupo;
     estadoArgument = "&estado=" + estado;
-    fullArgumentsText = FNSSuffix + anoArgument + blocosArgument + componentesArgument + countArgument + mesArgument + pageArgument + estadoArgument + tipoConsultaArgument
+    fullArgumentsText = FNSSuffix + anoArgument + blocosArgument + componentesArgument + countArgument + mesArgument + pageArgument + estadoArgument + tipoConsultaArgument + grupoArgument
 
     var xhr = new XMLHttpRequest();
     var parser = new DOMParser();
@@ -68,7 +72,7 @@ function loadData(ano, mes, estado, municipio, cnpj) {
     estadoArgument = "&estado=" + estado;
     municipioArgument = "&municipio=" + municipio;
     cnpjArgument = "&cpfCnpjUg=" + cnpj;
-    fullArgumentsText = FNSSuffix_detalhe + anoArgument + blocosArgument + componentesArgument + countArgument + mesArgument + "&page=1" + estadoArgument + municipioArgument + tipoConsultaArgument + cnpjArgument
+    fullArgumentsText = FNSSuffix_detalhe + anoArgument + blocosArgument + componentesArgument + countArgument + mesArgument + "&page=1" + estadoArgument + municipioArgument + tipoConsultaArgument + cnpjArgument + grupoArgument
 
     var xhr = new XMLHttpRequest();
     var parser = new DOMParser();
@@ -101,11 +105,23 @@ function csvComposer(ano, mes, estado) {
 
         loadData(anos[ano], meses[mes], estados[estado], farmacia.codigoMunicipioIBGE, farmacia.cpfCnpj, 1)
 
-        resposta_dado.resultado.total != 1 ? console.log("resposta_dado.resultado.total = " + resposta_dado.resultado.total + "!!") : 
+        //resposta_dado.resultado.total != 1 ? console.log("resposta_dado.resultado.total = " + resposta_dado.resultado.total + "!!") : 
 
-        repasse_string = resposta_dado.resultado.dados[0].valorTotalGeral
+        repasse_copagamento = 0
+        repasse_gratuidade = 0
+        for (j = 0; j < resposta_dado.resultado.dados.length; j++) {
+            if (resposta_dado.resultado.dados[j].sigla == "FARPOPGRAT") {
+                repasse_gratuidade = resposta_dado.resultado.dados[j].valorTotal
+            } else if (resposta_dado.resultado.dados[j].sigla == "FARPOPSUBS") {
+                repasse_copagamento = resposta_dado.resultado.dados[j].valorTotal
+            } else {
+                console.log(resposta_dado.resultado.dados[j].sigla)
+            }
+        }
 
-        csv_text += `${mm}/${yy};${estado_string};${municipio_string};${cnpj_string};${social_string};${repasse_string}\r`
+        repasse_total = resposta_dado.resultado.dados[0].valorTotalGeral
+
+        csv_text += `${mm}/${yy};${estado_string};${municipio_string};${cnpj_string};${social_string};${repasse_gratuidade};${repasse_copagamento};${repasse_total}\r`
     }
 }
 
