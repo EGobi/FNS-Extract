@@ -1,6 +1,6 @@
 FNSSuffix = "https://consultafns.saude.gov.br/recursos/consulta-detalhada/entidades?"
 FNSSuffix_detalhe = "https://consultafns.saude.gov.br/recursos/consulta-detalhada/detalhe-acao?"
-var csv_text = "data:text/csv;charset=utf-8,Data;Estado;Município;CNPJ;Razão social;Repasse;Total\r";
+var csv_text = "data:text/csv;charset=utf-8,Data;Estado;Município;CNPJ;Razão social;Repasse\r";
 
 var count = 100;
 var anos = [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
@@ -105,11 +105,14 @@ function csvComposer(ano, mes, estado) {
 
         //resposta_dado.resultado.total != 1 ? console.log("resposta_dado.resultado.total = " + resposta_dado.resultado.total + "!!") : 
 
+        insereCsv = false
+
         repasse = 0
         for (j = 0; j < resposta_dado.resultado.dados.length; j++) {
             if (resposta_dado.resultado.dados[j].sigla == "FARM POPULAR") {
                 repasse = resposta_dado.resultado.dados[j].valorTotal
                 console.log(social_string)
+                insereCsv = true
             } //else {
                 //console.log(resposta_dado.resultado.dados[j].sigla)
             //}
@@ -117,7 +120,7 @@ function csvComposer(ano, mes, estado) {
 
         //repasse_total = resposta_dado.resultado.dados[0].valorTotalGeral
 
-        csv_text += `${mm}/${yy};${estado_string};${municipio_string};${cnpj_string};${social_string};${repasse}\r`
+        if(insereCsv) {csv_text += `${mm}/${yy};${estado_string};${municipio_string};${cnpj_string};${social_string};${repasse}\r`}
     }
 }
 
