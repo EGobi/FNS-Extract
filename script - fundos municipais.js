@@ -107,9 +107,15 @@ function csvComposer(ano, mes, estado) {
 
         insereCsv = false
 
+        siglaVigente =
+        // 2006 - 01/2011
+        //"FARM POPULAR" 
+        // 02/2011 -
+        "FARMAPOP"
+
         repasse = 0
         for (j = 0; j < resposta_dado.resultado.dados.length; j++) {
-            if (resposta_dado.resultado.dados[j].sigla == "FARM POPULAR") {
+            if (resposta_dado.resultado.dados[j].sigla == siglaVigente) {
                 repasse = resposta_dado.resultado.dados[j].valorTotal
                 console.log(social_string)
                 insereCsv = true
