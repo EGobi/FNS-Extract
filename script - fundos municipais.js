@@ -108,10 +108,10 @@ function csvComposer(ano, mes, estado) {
         insereCsv = false
 
         siglaVigente =
-        // 2006 - 01/2011
-        //"FARM POPULAR" 
+        // 2004 - 01/2011
+        "FARM POPULAR" 
         // 02/2011 -
-        "FARMAPOP"
+        //"FARMAPOP"
 
         repasse = 0
         for (j = 0; j < resposta_dado.resultado.dados.length; j++) {
